@@ -16,7 +16,15 @@ Frontend aplikacji Career Coach zbudowany w React + Vite + Tailwind CSS.
 npm install
 ```
 
-### 2. Uruchom serwer deweloperski
+### 2. Skonfiguruj adres backendu
+
+Ustaw zmienną `VITE_API_URL` wskazującą adres backendu:
+
+```bash
+echo "VITE_API_URL=http://localhost:8000" > .env.local
+```
+
+### 3. Uruchom serwer deweloperski
 
 ```bash
 npm run dev
@@ -24,7 +32,7 @@ npm run dev
 
 Aplikacja będzie dostępna pod adresem: `http://localhost:5173`
 
-### 3. Upewnij się, że backend działa
+### 4. Upewnij się, że backend działa
 
 Backend powinien działać na `http://localhost:8000`
 
@@ -32,14 +40,12 @@ Aby uruchomić backend:
 ```bash
 cd ../career-coach-backend
 source venv/bin/activate  # lub venv/Scripts/activate na Windows
-python run.py
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## Funkcjonalność
+## Klucz OpenAI
 
-Aplikacja testuje połączenie z backendem poprzez wywołanie endpointu `/health`.
-
-Kliknij przycisk "Check Backend Health" aby sprawdzić czy backend odpowiada.
+Użytkownik wprowadza swój klucz API OpenAI w polu formularza w aplikacji. Klucz nie jest przechowywany w backendzie.
 
 ## Skrypty
 
@@ -67,7 +73,7 @@ Aplikacja jest gotowa do deploymentu na **Vercel**.
 1. Push kodu do GitHub
 2. Połącz repozytorium z Vercel
 3. Vercel automatycznie wykryje Vite i zbuduje projekt
-4. Pamiętaj o ustawieniu zmiennej środowiskowej `VITE_API_URL` w Vercel na adres backendu w produkcji
+4. Ustaw zmienną `VITE_API_URL` w Vercel na adres backendu w produkcji
 
 ---
 
