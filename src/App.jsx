@@ -7,6 +7,7 @@ function App() {
   // Stan aplikacji
   const [cvText, setCvText] = useState('')
   const [jobDescription, setJobDescription] = useState('')
+  const [apiKey, setApiKey] = useState('')
   const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -70,6 +71,11 @@ function App() {
       return
     }
 
+    if (!apiKey.trim()) {
+      setError('Proszę podać klucz API OpenAI')
+      return
+    }
+
     setLoading(true)
     setError(null)
 
@@ -77,6 +83,7 @@ function App() {
       const formData = new FormData()
       formData.append('cv_text', cvText)
       formData.append('job_description', jobDescription)
+      formData.append('api_key', apiKey)
 
       const response = await fetch(`${API_URL}/analyze`, {
         method: 'POST',
@@ -149,6 +156,35 @@ function App() {
               </div>
             </div>
 
+            {/* Klucz API */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                🔑 Klucz API OpenAI
+              </h2>
+              
+              <div className="space-y-3">
+                <input
+                  type="password"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="Wprowadź swój klucz API OpenAI..."
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  disabled={loading}
+                />
+                <p className="text-sm text-gray-500">
+                  Potrzebujesz klucz API OpenAI do analizy CV. Możesz go uzyskać na{' '}
+                  <a 
+                    href="https://platform.openai.com/api-keys" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-indigo-600 hover:text-indigo-800 underline"
+                  >
+                    platform.openai.com
+                  </a>
+                </p>
+              </div>
+            </div>
+
             {/* Opis oferty pracy */}
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
@@ -167,7 +203,7 @@ function App() {
             {/* Przycisk analizy */}
             <button
               onClick={analyzeCv}
-              disabled={loading || !cvText.trim() || !jobDescription.trim()}
+              disabled={loading || !cvText.trim() || !jobDescription.trim() || !apiKey.trim()}
               className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-400 text-white font-semibold py-4 px-6 rounded-xl transition duration-200 transform hover:scale-105 active:scale-95 shadow-lg"
             >
               {loading ? (
@@ -284,7 +320,7 @@ function App() {
                   Wyniki analizy pojawią się tutaj
                 </h3>
                 <p className="text-gray-500 text-sm">
-                  Załaduj CV i opisz ofertę pracy, a następnie kliknij "Analizuj CV"
+                  Załaduj CV, wprowadź klucz API i opisz ofertę pracy, a następnie kliknij "Analizuj CV"
                 </p>
               </div>
             )}
