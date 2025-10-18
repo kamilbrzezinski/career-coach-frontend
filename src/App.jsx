@@ -5,8 +5,6 @@ import { supabase, isSupabaseConfigured } from './lib/supabase'
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 function App() {
-  console.log('App component rendering...')
-  
   // Stan aplikacji
   const [cvText, setCvText] = useState('')
   const [jobDescription, setJobDescription] = useState('')
@@ -56,10 +54,7 @@ function App() {
     
     try {
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin
-        }
+        provider: 'google'
       })
       if (error) throw error
     } catch (error) {
